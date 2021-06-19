@@ -16,7 +16,7 @@ class PanController extends Controller
     public function index()
     {
         //
-        $datosPan['pans']=Pan::paginate(5);
+        $datosPan['pans']=Pan::paginate(1);
         return view('pan.indexPan',$datosPan);
     }
 
@@ -40,6 +40,24 @@ class PanController extends Controller
     public function store(Request $request)
     {
         //
+        $camposPan=[
+            'Nombre' => 'required|string|max:100',
+            'Ingredientes' => 'required|string|max:100',
+            'ClasePan' => 'required|string|max:100',
+            'Fechahecho' => 'required|date|max:100',
+            'Foto' => 'required|max:1000|mimes:jpeg,png,jpg',
+            'Coste' => 'required|string|max:100',
+            'Panadero_id' => 'required|string|max:100'
+            
+        ];
+        $mensaje=[
+            'required'=>'El :attribute se requiere.',
+            'Foto.required'=>'La foto se requiere.'
+            
+        ];
+
+        $this->validate($request,$camposPan,$mensaje);
+
         $datosPan=request()->except('_token');
 
         if($request->hasFile('Foto')){
@@ -48,7 +66,7 @@ class PanController extends Controller
 
 
         Pan::insert($datosPan);
-        return response()->json($datosPan);
+        return redirect('pan')->with('mensaje','Panesito agredado con satisfacción.');
     }
 
     /**
@@ -85,6 +103,33 @@ class PanController extends Controller
     public function update(Request $request, $id_Pan)
     {
         //
+        $camposPan=[
+            'Nombre' => 'required|string|max:100',
+            'Ingredientes' => 'required|string|max:100',
+            'ClasePan' => 'required|string|max:100',
+            'Fechahecho' => 'required|string|max:100',
+            
+            'Coste' => 'required|string|max:100',
+            'Panadero_id' => 'required|string|max:100'
+            
+        ];
+        $mensaje=[
+            'required'=>'El :attribute se requiere.',
+            
+            
+        ];
+
+        if($request->hasFile('Foto')){
+            $camposPan=[ 'Foto' => 'required|max:1000|mimes:jpeg,png,jpg',];
+            $mensaje=[ 'Foto.required'=>'La foto se requiere.'];
+        }
+
+        $this->validate($request,$camposPan,$mensaje);
+
+
+
+
+
         $datosPan=request()->except(['_token','_method']);
 
         if($request->hasFile('Foto')){
@@ -97,7 +142,8 @@ class PanController extends Controller
 
         Pan::where('id_Pan','=',$id_Pan)->update($datosPan);
         $pan=Pan::findOrFail($id_Pan);
-        return view('pan.editPan', compact('pan'));
+        //return view('pan.editPan', compact('pan'));
+        return redirect('pan')->with('mensaje','Panesito Modificadito');
     }
 
     /**
@@ -109,7 +155,15 @@ class PanController extends Controller
     public function destroy($id_Pan)
     {
         //
-        Pan::destroy($id_Pan);
-        return redirect('pan');
+        $pan=Pan::findOrFail($id_Pan);
+
+        if(Storage::delete('public/'.$pan->Foto)){
+            
+            Pan::destroy($id_Pan);
+
+        }
+
+        
+        return redirect('pan')->with('mensaje','Panesito borrado :(');
     }
 }

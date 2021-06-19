@@ -16,7 +16,7 @@ class PanaderoController extends Controller
     public function index()
     {
         //
-        $datosPanadero['panaderos']=panadero::paginate(5);
+        $datosPanadero['panaderos']=panadero::paginate(1);
         return view('panadero.indexPanadero',$datosPanadero);
     }
 
@@ -40,9 +40,29 @@ class PanaderoController extends Controller
     public function store(Request $request)
     {
         //
+        $camposPanadero=[
+            'Nombre' => 'required|string|max:100',
+            'Apellido' => 'required|string|max:100',
+            'Telefono' => 'required|string|max:100',
+            'DNI' => 'required|string|max:100',
+            'Movil' => 'required|string|max:100',
+            'Correo' => 'required|email',
+            'Direccion' => 'required|string|max:100',
+            'CodPostal' => 'required|string|max:100'
+        ];
+        $mensaje=[
+            'required'=>'El :attribute se requiere.'
+            
+        ];
+
+        $this->validate($request,$camposPanadero,$mensaje);
+
+
         $datosPanadero=request()->except('_token');
         Panadero::insert($datosPanadero);
-        return response()->json($datosPanadero);
+        // return response()->json($datosPanadero);
+
+        return redirect('panadero')->with('mensaje','Panaderito agredado con satisfacción.');
     }
 
     /**
@@ -79,11 +99,30 @@ class PanaderoController extends Controller
     public function update(Request $request, $id_Panadero)
     {
         //
+        $camposPanadero=[
+            'Nombre' => 'required|string|max:100',
+            'Apellido' => 'required|string|max:100',
+            'Telefono' => 'required|string|max:100',
+            'DNI' => 'required|string|max:100',
+            'Movil' => 'required|string|max:100',
+            'Correo' => 'required|email',
+            'Direccion' => 'required|string|max:100',
+            'CodPostal' => 'required|string|max:100'
+        ];
+        $mensaje=[
+            'required'=>'El :attribute se requiere.'
+            
+        ];
+
+        $this->validate($request,$camposPanadero,$mensaje);
+
+
         $datosPanadero = request()->except(['_token','_method']);
         Panadero::where('id_Panadero','=',$id_Panadero)->update($datosPanadero);
 
         $panadero=Panadero::findOrFail($id_Panadero);
-        return view('panadero.editPanadero', compact('panadero'));
+        //return view('panadero.editPanadero', compact('panadero'));
+        return redirect('panadero')->with('mensaje','Panaderito Modificadito ');
     }
 
     /**
@@ -96,7 +135,7 @@ class PanaderoController extends Controller
     {
         //
         Panadero::destroy($id_Panadero);
-        return redirect('panadero');
+        return redirect('panadero')->with('mensaje','Panaderito borrado :(');
 
     }
 }

@@ -1,3 +1,27 @@
+
+
+@extends('layouts.app')
+@section('content')
+<div class="container">
+
+
+@if(Session::has('mensaje'))
+<div class="alert alert-success alert-dismissible" role="alert">
+{{Session::get('mensaje')}}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+</div>
+@endif
+
+
+
+
+
+
+<a href="{{url('panadero/create')}}" class="btn btn-success">Registrar nuevo Panadero</a>
+<br>
+<br>
 <table class="table table-dark">
     <thead class="thead-dark">
         <tr>
@@ -35,18 +59,19 @@
 
             <td>
             
-                <a href="{{url('/panadero/'.$panadero->id_Panadero.'/edit')}}">
+                <a href="{{url('/panadero/'.$panadero->id_Panadero.'/edit')}}" class="btn btn-warning">
             
                 Modificar
 
                 </a> 
             
             | 
-            
+                <!-- debería de ponerme alinearme con el inline pero no lo hace -->
                 <form action="{{url('/panadero/'.$panadero->id_Panadero)}}" method="post">
+                
                 @csrf
                 {{method_field('DELETE')}}
-                    <input type="submit" onclick="return confirm('¿Quieres borrar de verdad de la buena?')" value="Suprimir">
+                    <input class="btn btn-danger" type="submit" onclick="return confirm('¿Quieres borrar de verdad de la buena?')" value="Suprimir">
                 
                 </form>
             
@@ -55,3 +80,6 @@
     @endforeach
     </tbody>
 </table>
+{!! $panaderos->links() !!}
+</div>
+@endsection

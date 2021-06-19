@@ -1,6 +1,13 @@
+
+@extends('layouts.app')
+@section('content')
+<div class="container">
+
 <form action="{{url('/pan')}}" method="post" enctype="multipart/form-data">
 @csrf
- @include('pan.formPan');
+ @include('pan.formPan',['modo'=>'Crear']);
 
 
 </form>
+</div>
+@endsection
