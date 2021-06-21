@@ -107,7 +107,7 @@ class PanController extends Controller
             'Nombre' => 'required|string|max:100',
             'Ingredientes' => 'required|string|max:100',
             'ClasePan' => 'required|string|max:100',
-            'Fechahecho' => 'required|string|max:100',
+            'Fechahecho' => 'required|date|max:100',
             
             'Coste' => 'required|string|max:100',
             'Panadero_id' => 'required|string|max:100'

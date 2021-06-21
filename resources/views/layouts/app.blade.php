@@ -37,10 +37,10 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('panadero.index') }}">{{ __('Panaderos') }}</a>
                             
-
-                            
                         </li>
-
+<li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

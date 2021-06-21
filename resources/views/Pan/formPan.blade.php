@@ -33,7 +33,7 @@
 
     <div class="form-group">
     <label for="FechaHecho">Fecha de Elaboración</label>
-    <input type="date"  class="form-control" name="FechaHecho" value="{{isset($pan->FechaHecho)?$pan->FechaHecho:old('FechaHecho')}}" id="FechaHecho">
+    <input type="date"  class="form-con  <trol" name="FechaHecho" value="{{isset($pan->FechaHecho)?$pan->FechaHecho:old('FechaHecho')}}" id="FechaHecho">
     
     </div>
 
